@@ -6,6 +6,12 @@ const { validateUser, validateLogin } = require("../validation/userValidation")
 const { config } = require("../config/secret")
 const router = express.Router();
 
+
+router.get("/" , async(req,res)=> {
+    res.json({msg:"Users work"})
+  })
+  
+
 //returns the user info when he sends token
 router.get("/myInfo", auth, async (req, res) => {
     try {
