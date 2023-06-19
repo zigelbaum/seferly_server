@@ -9,7 +9,7 @@ exports.validateUser = (_reqBody) => {
         },
         email: Joi.string().min(2).max(99).email().required(),
         password: Joi.string().min(4).max(50).required(),
-        phone: Joi.string().pattern(/^(\\+972|0)(\\-)?(([23489]{1}\\d{1})|([5]{1}[012345689]{1}))(\\-)?\\d{7}$/).required(),
+        phone: Joi.string().pattern(/^(05\d{8})$/).required(),
         city: Joi.string().min(3).max(99).required(),
         school: Joi.string().min(3).max(99).required()
     })

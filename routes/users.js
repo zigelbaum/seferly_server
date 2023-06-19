@@ -142,7 +142,7 @@ router.patch("/changeActive/:userID", authAdmin, async (req, res) => {
 })
 
 
-
+//deleting account only for the user and admin
 router.delete("/:idDel", auth, async (req, res) => {
     try {
         let idDel = req.params.idDel;
@@ -162,6 +162,7 @@ router.delete("/:idDel", auth, async (req, res) => {
 })
 
 
+//editing user info only for user and admin
 router.put("/:idEdit", auth, async (req, res) => {
     let valdiateBody = validateUser(req.body);
     if (valdiateBody.error) {
@@ -170,9 +171,10 @@ router.put("/:idEdit", auth, async (req, res) => {
     try {
         let idEdit = req.params.idEdit;
         let data;
-        if (req.tokenData.role == "admin") {
-            data = await UserModel.updateOne({ _id: idEdit }, req.body);
-        } else if (req.tokenData._id == idEdit) {
+        // if (req.tokenData.role == "admin") {
+        //     data = await UserModel.updateOne({ _id: idEdit }, req.body);
+        // }
+        if (req.tokenData._id == idEdit || req.tokenData._id == config.adminId) {
             data = await UserModel.updateOne({ _id: idEdit }, req.body);
         }
         res.json(data);
