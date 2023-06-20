@@ -1,3 +1,4 @@
+const Joi = require("joi");
 
 exports.validateSubject = (_reqBody) => {
     let joiSchema = Joi.object({
