@@ -4,8 +4,12 @@ const { SubjectModel } = require("../models/subjectModel");
 const { validateSubject } = require("../validation/subjectValidation")
 const router = express.Router();
 
+router.get("/" , async(req,res)=> {
+  res.json({msg:"Uploads work"})
+})
 
-router.get("/", async (req, res) => {
+
+router.get("/subjectsList", async (req, res) => {
   let perPage = req.query.perPage || 20;
   let page = req.query.page || 1;
 
