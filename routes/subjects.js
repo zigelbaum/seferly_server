@@ -24,7 +24,7 @@ router.get("/", async (req, res) => {
 })
 
 
-router.post("/", authAdmin, async (req, res) => {
+router.post("/subjectsList", authAdmin, async (req, res) => {
   let validBody = validateSubject(req.body);
   if (validBody.error) {
     res.status(400).json(validBody.error.details)
@@ -58,10 +58,10 @@ router.put("/:idEdit", authAdmin, async (req, res) => {
 })
 
 
-router.delete("/:idDel", authAdmin, async (req, res) => {
+router.delete("/:nameDel", authAdmin, async (req, res) => {
   try {
-    let idDel = req.params.idDel
-    let data = await SubjectModel.deleteOne({ _id: idDel });
+    let nameDel = req.params.nameDel
+    let data = await SubjectModel.deleteOne({ name: nameDel });
     res.json(data);
   }
   catch (err) {
