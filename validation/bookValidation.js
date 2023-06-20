@@ -1,6 +1,6 @@
 const Joi = require("joi");
 
-exports.validateUser = (_reqBody) => {
+exports.validateBook = (_reqBody) => {
 
     let joiSchema = Joi.object({
         class: Joi.string().min(1).max(2).required(),
