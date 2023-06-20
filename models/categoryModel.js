@@ -3,8 +3,7 @@ const Joi = require("joi");
 
 const categorySchema = new mongoose.Schema({
   name:String,
-  url_name:String,
-  img_url:String
+  url_name:String
 })
 
 
