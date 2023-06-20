@@ -4,6 +4,8 @@ const { CityModel } = require("../models/cityModel");
 const {validateCity}=require("../validation/cityValidation")
 const router = express.Router();
 
+
+//works
 router.get("/" , async(req,res)=> {
   let perPage = req.query.perPage || 99;
   let page = req.query.page || 1;
@@ -22,6 +24,8 @@ router.get("/" , async(req,res)=> {
   }
 })
 
+
+//works
 router.get("/byId/:id", async(req,res) => {
   try{
     let data = await CityModel.findOne({_id:req.params.id})
@@ -34,7 +38,7 @@ router.get("/byId/:id", async(req,res) => {
 })
 
 
-
+//works
 router.post("/", authAdmin, async(req,res) => {
   let validBody = validateCity(req.body);
   if(validBody.error){
@@ -51,6 +55,8 @@ router.post("/", authAdmin, async(req,res) => {
   }
 })
 
+
+//works
 router.put("/:idEdit", authAdmin, async(req,res) => {
   let validBody = validateCity(req.body);
   if(validBody.error){
@@ -67,6 +73,7 @@ router.put("/:idEdit", authAdmin, async(req,res) => {
   }
 })
 
+//works
 router.delete("/:idDel", authAdmin, async(req,res) => {
   try{
     let idDel = req.params.idDel
