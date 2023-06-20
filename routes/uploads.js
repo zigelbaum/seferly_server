@@ -1,10 +1,8 @@
 const express = require("express");
-const bcrypt = require("bcrypt");
 const { auth, authAdmin } = require("../middlewares/auth");
 const { UploadModel } = require("../models/uploadModel");
 const { UserModel } = require("../models/userModel");
 const {validateUpload} = require("../validation/uploadValidation");
-const { model } = require("mongoose");
 const router = express.Router();
 
 
