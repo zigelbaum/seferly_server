@@ -10,8 +10,8 @@ let userSchema = new mongoose.Schema({
   email:String,
   password:String,
   city:String,
-  school:String,
   phone:String,
+  city:String,
   date_created:{
     type:Date , default:Date.now()
   },
@@ -20,8 +20,7 @@ let userSchema = new mongoose.Schema({
   },
   active:{
     type:Boolean, default: true,
-  },
-  city:String
+  }
 })
 
 exports.UserModel = mongoose.model("users",userSchema);

@@ -1,8 +1,7 @@
 const indexR = require("./index");
 const usersR = require("./users");
 const booksR = require("./books");
-const categoryR=require("./categories");
-const cityR=require("./cities");
+const categoryR=require("./categories")
 
 exports.routesInit = (app) => {
   app.use("/",indexR);
