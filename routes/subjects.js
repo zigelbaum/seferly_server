@@ -4,8 +4,8 @@ const { SubjectModel } = require("../models/subjectModel");
 const { validateSubject } = require("../validation/subjectValidation")
 const router = express.Router();
 
-router.get("/" , async(req,res)=> {
-  res.json({msg:"Uploads work"})
+router.get("/" ,authAdmin, async(req,res)=> {
+  res.json({msg:"Subjects work"})
 })
 
 
