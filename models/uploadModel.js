@@ -3,14 +3,19 @@ const jwt = require("jsonwebtoken");
 const { config } = require("../config/secret")
 
 let uploadSchema = new mongoose.Schema({
-    user_id: String,
+    user_id:{ type:mongoose.ObjectId, default:null},
     user_name: String,
     user_phone: String,
     user_email: String,
-    book_name: String,
+    book: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'books'
+    },
     price:Number,
     city_name: String,
-    subject: String,
+    subject: {   type: mongoose.Schema.Types.ObjectId,
+        ref: 'subjects'
+    },
     date_created: {
         type: Date, default: Date.now()
     },
