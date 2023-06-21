@@ -84,7 +84,7 @@ router.get("/subject/:subName", async (req, res) => {
     res.status(500).json({ msg: "err in get uploads by subject", err })
   }
 })
-
+//works
 //returns all uploads by book id
 router.get("/book/:bookID", async (req, res) => {
   let perPage = req.query.perPage || 10;
@@ -193,6 +193,8 @@ router.put("/:idEdit", auth, async (req, res) => {
   }
 })
 
+
+//works
 //deletes an upload
 router.delete("/:idDel", authAdmin, async (req, res) => {
   try {
