@@ -9,10 +9,6 @@ const { forEach } = require("lodash");
 const router = express.Router();
 
 //works
-router.get("/", authAdmin, async (req, res) => {
-  res.json({ msg: "uploads works" })
-})
-//works
 router.get("/:uploadId",async(req,res)=>{
   let uploadID = req.params.uploadId
         try {
@@ -28,29 +24,43 @@ router.get("/:uploadId",async(req,res)=>{
 })
 
 //returns list of all uploads
-router.get("/uploadsList", async (req, res) => {
+//works
+router.get("/", async (req, res) => {
   let perPage = req.query.perPage || 10;
   let page = req.query.page || 1;
+
+  try{
+    let data = await UploadModel.find({})
+    .find({})
+    .limit(perPage)
+    .skip((page - 1) * perPage)
+    .populate('user_id','fullName email city phone')
+    .populate('bookId','name type subject')
+    res.json(data);
+  }
+  catch(err){
+    console.log(err);
+    res.status(500).json({msg:"there error try again later",err})
+  }
+})
+
+//works
+//post a new upload, needs to be a logged in user
+router.post("/", auth, async (req, res) => {
+  let validateBody = validateUpload(req.body);
+  if (validateBody.error) {
+    return res.status(400).json(validateBody.error.details);
+  }
   
   try {
-    let data = await UploadModel
-      .find({})
-      // .limit(perPage)
-      // .skip((page - 1) * perPage);
-      .populate('user_id','fullName email city phone')
-      .populate('bookId','name type subject')
-      .exec();
-     
-    // data.forEach(upload=>{
-    //   upload.populate('user_id','fullName email city phone')
-    //   .populate('bookId','name type subject')
-
-    // })
-    res.json(data)
+    let upload = new UploadModel(req.body);
+    upload.user_id = req.tokenData._id;
+    await upload.save();
+    res.status(201).json(upload);
   }
   catch (err) {
     console.log(err);
-    res.status(500).json({ msg: "err couldn't load uploads", err });
+    res.status(500).json({ msg: "err failed to add upload to db", err });
   }
 })
 
@@ -66,6 +76,7 @@ router.get("/subject/:subName", async (req, res) => {
       .limit(perPage)
       .skip((page - 1) * perPage)
       .sort({ _id: -1 })
+     
     res.json(data);
   }
   catch (err) {
@@ -74,15 +85,17 @@ router.get("/subject/:subName", async (req, res) => {
   }
 })
 
-//returns all uploads by book
-router.get("/book/:bookName", async (req, res) => {
+//returns all uploads by book id
+router.get("/book/:bookID", async (req, res) => {
   let perPage = req.query.perPage || 10;
   let page = req.query.page || 1;
 
   try {
-    let bookName = req.params.bookName;
-    let bookReg = new RegExp(bookName, "i");
-    let data = await UploadModel.find({ book_name: bookReg })
+    let bookID = req.params.bookID;
+    let data = await UploadModel.find({})
+    .populate('user_id','fullName email city phone')
+    .populate('bookId','name type subject')
+    .find({ 'bookId': bookID })
       .limit(perPage)
       .skip((page - 1) * perPage)
       .sort({ _id: -1 })
@@ -157,24 +170,6 @@ router.get("/prices", async (req, res) => {
 })
 
 
-//post a new upload, needs to be a logged in user
-router.post("/", auth, async (req, res) => {
-  let validateBody = validateUpload(req.body);
-  if (validateBody.error) {
-    return res.status(400).json(validateBody.error.details);
-  }
-  
-  try {
-    let upload = new UploadModel(req.body);
-    upload.user_id = req.tokenData._id;
-    await upload.save();
-    res.status(201).json(upload);
-  }
-  catch (err) {
-    console.log(err);
-    res.status(500).json({ msg: "err failed to add upload to db", err });
-  }
-})
 
 //update an upload
 router.put("/:idEdit", auth, async (req, res) => {
@@ -199,7 +194,7 @@ router.put("/:idEdit", auth, async (req, res) => {
 })
 
 //deletes an upload
-router.delete("/:idDel", auth, async (req, res) => {
+router.delete("/:idDel", authAdmin, async (req, res) => {
   try {
     let idDel = req.params.idDel;
     let data;
