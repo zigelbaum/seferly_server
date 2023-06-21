@@ -10,7 +10,7 @@ exports.validateBook = (_reqBody) => {
         type: Joi.string().min(2).max(50).required(),
         author_name: Joi.string().min(2).max(50).required(),
         publisher: Joi.string().min(2).max(50).required(),
-        dancode: Joi.string().pattern(/^\d{2}-\d{7}$/).required()
+        dancode: Joi.string().required()
     })
     return joiSchema.validate(_reqBody);
 }
