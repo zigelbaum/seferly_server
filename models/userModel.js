@@ -11,7 +11,6 @@ let userSchema = new mongoose.Schema({
   password:String,
   city:String,
   phone:String,
-  city:String,
   date_created:{
     type:Date , default:Date.now()
   },
