@@ -1,21 +1,16 @@
 const mongoose = require("mongoose");
 const jwt = require("jsonwebtoken");
 const { config } = require("../config/secret")
+const {UserModel}=require("./userModel")
+const {BookModel}=require("./bookModel")
 
 let uploadSchema = new mongoose.Schema({
-    user_id:{ type:mongoose.ObjectId, default:null},
-    user_name: String,
-    user_phone: String,
-    user_email: String,
-    book: {
+    user_id:{ type:mongoose.ObjectId, ref:"users"},
+    bookId: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'books'
     },
     price:Number,
-    city_name: String,
-    subject: {   type: mongoose.Schema.Types.ObjectId,
-        ref: 'subjects'
-    },
     date_created: {
         type: Date, default: Date.now()
     },

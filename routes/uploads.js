@@ -1,30 +1,52 @@
 const express = require("express");
 const { auth, authAdmin } = require("../middlewares/auth");
 const { UploadModel } = require("../models/uploadModel");
+const {SubjectModel}=require("./subjects")
 const { UserModel } = require("../models/userModel");
 const { validateUpload } = require("../validation/uploadValidation");
 const { BookModel } = require("../models/bookModel");
+const { forEach } = require("lodash");
 const router = express.Router();
 
-
+//works
 router.get("/", authAdmin, async (req, res) => {
   res.json({ msg: "uploads works" })
+})
+//works
+router.get("/:uploadId",async(req,res)=>{
+  let uploadID = req.params.uploadId
+        try {
+            let upload = await UploadModel.find({_id:uploadID})
+            .populate('user_id','fullName email city phone')
+                 .populate('bookId','name type subject')
+            console.log(upload)
+            res.json(upload)
+        } catch (err) {
+            console.log(err);
+            res.status(500).json({ msg: "there error try again later", err })
+        }
 })
 
 //returns list of all uploads
 router.get("/uploadsList", async (req, res) => {
   let perPage = req.query.perPage || 10;
   let page = req.query.page || 1;
-  let sort = req.query.sort || "_id";
-  let reverse = req.query.reverse == "yes" ? -1 : 1;
-
+  
   try {
     let data = await UploadModel
       .find({})
-      .limit(perPage)
-      .skip((page - 1) * perPage)
-      .sort({ [sort]: reverse })
-    res.json(data);
+      // .limit(perPage)
+      // .skip((page - 1) * perPage);
+      .populate('user_id','fullName email city phone')
+      .populate('bookId','name type subject')
+      .exec();
+     
+    // data.forEach(upload=>{
+    //   upload.populate('user_id','fullName email city phone')
+    //   .populate('bookId','name type subject')
+
+    // })
+    res.json(data)
   }
   catch (err) {
     console.log(err);
@@ -134,6 +156,7 @@ router.get("/prices", async (req, res) => {
   }
 })
 
+
 //post a new upload, needs to be a logged in user
 router.post("/", auth, async (req, res) => {
   let validateBody = validateUpload(req.body);
@@ -142,25 +165,8 @@ router.post("/", auth, async (req, res) => {
   }
   
   try {
-    // Extract the necessary data from the request body
-    const { bookId, subjectId } = req.body;
-
-    // Check if the book exists
-    const book = await BookModel.findById(bookId);
-    if (!book) {
-      return res.status(404).json({ message: 'Book not found' });
-    }
-
-    const subject = await SubjectModel.findById(subjectId);
-    if (!subject) {
-      return res.status(404).json({ message: 'subject not found' });
-    }
     let upload = new UploadModel(req.body);
     upload.user_id = req.tokenData._id;
-    let userInfo = await UserModel.findOne({ user_id: upload.user_id })
-    upload.user_name = userInfo.fullName;
-    upload.user_phone = userInfo.phone;
-    upload.user_email = userInfo.email;
     await upload.save();
     res.status(201).json(upload);
   }
