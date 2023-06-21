@@ -8,7 +8,7 @@ let bookSchema = new mongoose.Schema({
     type:String,
     author_name:String,
     publisher:String,
-    dancode: String
+    // dancode: String
 })
 
 exports.BookModel = mongoose.model("books", bookSchema);
