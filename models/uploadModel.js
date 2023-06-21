@@ -13,7 +13,7 @@ let uploadSchema = new mongoose.Schema({
     },
     price:Number,
     city_name: String,
-    subject: {   type: mongoose.Schema.Types.ObjectId,
+    subject: {   type: mongoose.ObjectId,
         ref: 'subjects'
     },
     date_created: {
