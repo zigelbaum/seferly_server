@@ -8,6 +8,7 @@ router.get("/" ,authAdmin, (req,res)=> {
   res.json({msg:"books works!"})
 })
 
+
 //returns list of all books
 router.get("/booksList", async (req, res) => {
   let perPage = req.query.perPage || 10;
@@ -29,6 +30,7 @@ router.get("/booksList", async (req, res) => {
   }
 })
 
+
 //returns all books by subject
 router.get("/city/:idSubject", async (req, res) => {
   let perPage = req.query.perPage || 10;
@@ -49,6 +51,7 @@ router.get("/city/:idSubject", async (req, res) => {
   }
 })
 
+
 //post a new book
 router.post("/", authAdmin, async (req, res) => {
   let validBody = validateBook(req.body);
@@ -65,6 +68,7 @@ router.post("/", authAdmin, async (req, res) => {
     res.status(500).json({ msg: "err in post book", err })
   }
 })
+
 
   //updates a book
   router.put("/:idEdit",authAdmin, async (req, res) => {
@@ -84,6 +88,7 @@ router.post("/", authAdmin, async (req, res) => {
     }
   })
 
+  
 //deletes a book
 router.delete("/:idDel", authAdmin, async (req, res) => {
   try {
