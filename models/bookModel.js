@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 
 let bookSchema = new mongoose.Schema({
     class: String,
-    subject:String,
+    subjectId:{ type:mongoose.Schema.Types.ObjectId, ref:'subjects'},
     supervision: String,
     name:String,
     type:String,
