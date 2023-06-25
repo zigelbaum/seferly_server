@@ -9,7 +9,8 @@ exports.validateUser = (_reqBody) => {
         },
         email: Joi.string().min(2).max(99).email().required(),
         password: Joi.string().min(4).max(50).required(),
-        phone: Joi.string().required()
+        phone: Joi.string().required(),
+        city:Joi.string.required()
     })
     return joiSchema.validate(_reqBody);
 }
