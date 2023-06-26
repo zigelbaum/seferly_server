@@ -25,6 +25,13 @@ router.get("/myInfo", auth, async (req, res) => {
 })
 
 
+//returns token data
+router.get("/checkToken", auth, async (req, res) => {
+    // console.log(req.tokenData)
+    res.status(200).json(req.tokenData);
+  })
+
+
 //returns rgisterd users list only to the admin
 router.get("/usersList", authAdmin, async (req, res) => {
     try {
