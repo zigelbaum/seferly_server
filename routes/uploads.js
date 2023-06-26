@@ -1,58 +1,53 @@
 const express = require("express");
 const { auth, authAdmin } = require("../middlewares/auth");
 const { UploadModel } = require("../models/uploadModel");
-const {SubjectModel}=require("./subjects")
-const { UserModel } = require("../models/userModel");
 const { validateUpload } = require("../validation/uploadValidation");
-const { BookModel } = require("../models/bookModel");
 const { forEach } = require("lodash");
 const router = express.Router();
+
 
 //works
 router.get("/", authAdmin, async (req, res) => {
   res.json({ msg: "uploads works" })
 })
+
+
 //works
-router.get("/:uploadId",async(req,res)=>{
+router.get("/:uploadId", async (req, res) => {
   let uploadID = req.params.uploadId
-        try {
-            let upload = await UploadModel.find({_id:uploadID})
-            .populate('user_id','fullName email city phone')
-                 .populate('bookId','name type subject')
-            console.log(upload)
-            res.json(upload)
-        } catch (err) {
-            console.log(err);
-            res.status(500).json({ msg: "there error try again later", err })
-        }
+  try {
+    let upload = await UploadModel.find({ _id: uploadID })
+      .populate('user_id', 'fullName email city phone')
+      .populate('bookId', 'name type subject')
+    console.log(upload)
+    res.json(upload)
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ msg: "there error try again later", err })
+  }
 })
 
+
 //returns list of all uploads
-router.get("/uploadsList", async (req, res) => {
+router.get("/list", async (req, res) => {
   let perPage = req.query.perPage || 10;
   let page = req.query.page || 1;
-  
+
   try {
     let data = await UploadModel
       .find({})
+      // .populate('user_id')
+      // .populate('bookId')
       // .limit(perPage)
       // .skip((page - 1) * perPage);
-      .populate('user_id','fullName email city phone')
-      .populate('bookId','name type subject')
-      .exec();
-     
-    // data.forEach(upload=>{
-    //   upload.populate('user_id','fullName email city phone')
-    //   .populate('bookId','name type subject')
 
-    // })
-    res.json(data)
-  }
-  catch (err) {
+    res.json(data);
+  } catch (err) {
     console.log(err);
-    res.status(500).json({ msg: "err couldn't load uploads", err });
+    res.status(500).json({ msg: "Error: Couldn't load uploads", err });
   }
-})
+});
+
 
 //returns all uploads by subject
 router.get("/subject/:subName", async (req, res) => {
@@ -163,7 +158,7 @@ router.post("/", auth, async (req, res) => {
   if (validateBody.error) {
     return res.status(400).json(validateBody.error.details);
   }
-  
+
   try {
     let upload = new UploadModel(req.body);
     upload.user_id = req.tokenData._id;

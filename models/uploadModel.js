@@ -7,7 +7,7 @@ const {BookModel}=require("./bookModel")
 let uploadSchema = new mongoose.Schema({
     user_id:{ type:mongoose.ObjectId, ref:"users"},
     bookId: {
-        type: mongoose.Schema.Types.ObjectId,
+        type: mongoose.ObjectId,
         ref: 'books'
     },
     price:Number,
