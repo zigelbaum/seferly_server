@@ -24,12 +24,15 @@ exports.auth = (req,res,next) => {
 exports.authAdmin = (req,res,next) => {
   let token = req.header("x-api-key");
   if(!token){
+    console.log("error 1");
     return res.status(401).json({msg:"You need to send token to this endpoint url"})
   }
   try{
     let decodeToken = jwt.verify(token,config.tokenSecret);
     // check if the role in the token of admin
+    console.log("error 2");
     if(decodeToken.role != "admin"){
+      console.log("error 3");
       return res.status(401).json({msg:"Token invalid or expired, code: 3"})
     }
    
