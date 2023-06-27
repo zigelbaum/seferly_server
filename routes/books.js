@@ -55,6 +55,7 @@ router.get("/subjects/:idSubject", async (req, res) => {
 router.get("/count", async (req, res) => {
   try {
       let count = await BookModel.countDocuments({})
+      console.log(count)
       res.json({ count })
   }
   catch (err) {
