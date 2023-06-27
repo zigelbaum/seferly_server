@@ -50,6 +50,20 @@ router.get("/subjects/:idSubject", async (req, res) => {
   }
 })
 
+
+//returns number of books in the system
+router.get("/count", async (req, res) => {
+  try {
+      let count = await BookModel.countDocuments({})
+      res.json({ count })
+  }
+  catch (err) {
+      console.log(err)
+      res.status(500).json({ msg: "err", err })
+  }
+})
+
+
 //post a new book
 router.post("/", authAdmin, async (req, res) => {
   let validBody = validateBook(req.body);
