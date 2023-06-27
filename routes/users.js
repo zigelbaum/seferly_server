@@ -160,9 +160,9 @@ router.delete("/:idDel", auth, async (req, res) => {
     try {
         let idDel = req.params.idDel;
         let data;
-        // if (req.tokenData.role == "admin") {
-        //     data = await UserModel.deleteOne({ _id: idDel })
-        // }
+        if (req.tokenData.role == "admin") {
+            data = await UserModel.deleteOne({ _id: idDel })
+        }
         if (req.tokenData._id == idDel || req.tokenData._id == config.adminId) {
             data = await UserModel.deleteOne({ _id: idDel })
         }
