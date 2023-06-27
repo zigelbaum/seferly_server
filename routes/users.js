@@ -7,10 +7,10 @@ const { config } = require("../config/secret")
 const router = express.Router();
 
 
-router.get("/" , async(req,res)=> {
-    res.json({msg:"Users work"})
-  })
-  
+router.get("/", async (req, res) => {
+    res.json({ msg: "Users work" })
+})
+
 
 //returns the user info when he sends token
 router.get("/myInfo", auth, async (req, res) => {
@@ -29,7 +29,7 @@ router.get("/myInfo", auth, async (req, res) => {
 router.get("/checkToken", auth, async (req, res) => {
     console.log(req.tokenData)
     res.status(200).json(req.tokenData);
-  })
+})
 
 
 //returns rgisterd users list only to the admin

@@ -31,7 +31,7 @@ router.get("single/:uploadId",async(req,res)=>{
 
 
 //returns list of all uploads
-router.get("/list", async (req, res) => {
+router.get("/uploadsList", async (req, res) => {
   let perPage = req.query.perPage || 10;
   let page = req.query.page || 1;
 
