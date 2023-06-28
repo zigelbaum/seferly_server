@@ -19,7 +19,8 @@ let userSchema = new mongoose.Schema({
   },
   active:{
     type:Boolean, default: true,
-  }
+  },
+  // wishList:{ type:mongoose.ObjectId, ref:'books', default:null}
 })
 
 exports.UserModel = mongoose.model("users",userSchema);
