@@ -28,7 +28,7 @@ router.get("/myInfo", auth, async (req, res) => {
 //returns token data
 router.get("/checkToken", auth, async (req, res) => {
     console.log(req.tokenData)
-    res.status(200).json(req.tokenData);
+    res.json(req.tokenData);
 })
 
 
