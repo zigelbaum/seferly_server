@@ -27,8 +27,10 @@ router.get("/myInfo", auth, async (req, res) => {
 
 //returns token data
 router.get("/checkToken", auth, async (req, res) => {
-    console.log(req.tokenData)
-    res.json(req.tokenData);
+    if (res.status != 401) {
+        console.log(req.tokenData)
+        res.json(req.tokenData);
+    }
 })
 
 
