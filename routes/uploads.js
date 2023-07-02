@@ -41,8 +41,6 @@ router.get("/uploadsList", async (req, res) => {
   try {
     let data = await UploadModel
       .find({})
-      .limit(perPage)
-      .skip((page - 1) * perPage)
       .populate('user_id', 'fullName email city phone')
       .populate({
         path: 'bookId',
