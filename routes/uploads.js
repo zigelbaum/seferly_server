@@ -64,6 +64,38 @@ router.get("/uploadsList", async (req, res) => {
 })
 
 
+//get my uploads
+router.get("/myUploads", auth, async (req, res) => {
+  let perPage = req.query.perPage || 3;
+  let page = req.query.page || 1;
+  let sort = req.query.sort || "_id";
+  let reverse = req.query.reverse == "yes" ? 1 : -1;
+
+  try {
+      let data = await UploadModel.find({ user_id: req.tokenData._id })
+      .populate('user_id', 'fullName email city phone')
+      .populate({
+        path: 'bookId',
+        populate: {
+        //  path: 'bookId.subjectId',
+          path: 'subjectId',
+          model: 'subjects',
+        },
+        model: 'books',
+        select: 'name subjectId type'
+      })
+          .limit(perPage)
+          .skip((page - 1) * perPage)
+          .sort({ [sort]: reverse })        // like -> order by _id DESC
+      return res.status(200).json(data);
+  }
+  catch (err) {
+      console.log(err);
+      res.status(500).json({ msg: "there an error server-uploads/myUploads try again later", err })
+  }
+})
+
+
 //post a new upload, needs to be a logged in user
 router.post("/", auth, async (req, res) => {
   let validateBody = validateUpload(req.body);

@@ -4,6 +4,7 @@ const { auth, authAdmin } = require("../middlewares/auth");
 const { UserModel, createToken } = require("../models/userModel");
 const { validateUser, validateLogin } = require("../validation/userValidation")
 const { config } = require("../config/secret")
+
 const router = express.Router();
 
 
