@@ -16,13 +16,21 @@ router.get("/booksList", async (req, res) => {
 
 
   try {
-    let data = await BookModel
+    if(!req.query.perPage){
+      let data = await BookModel
       .find({})
-      // .find({})
-      // .limit(perPage)
-      // .skip((page - 1) * perPage)
       .populate('subjectId','name')
     res.json(data);
+    }else{
+      let data = await BookModel
+      .find({})
+      .find({})
+      .limit(perPage)
+      .skip((page - 1) * perPage)
+      .populate('subjectId','name')
+    res.json(data);
+    }
+   
   }
   catch (err) {
     console.log(err);
