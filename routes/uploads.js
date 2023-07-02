@@ -73,6 +73,17 @@ router.get("/myUploads", auth, async (req, res) => {
 
   try {
       let data = await UploadModel.find({ user_id: req.tokenData._id })
+      .populate('user_id', 'fullName email city phone')
+      .populate({
+        path: 'bookId',
+        populate: {
+        //  path: 'bookId.subjectId',
+          path: 'subjectId',
+          model: 'subjects',
+        },
+        model: 'books',
+        select: 'name subjectId type'
+      })
           .limit(perPage)
           .skip((page - 1) * perPage)
           .sort({ [sort]: reverse })        // like -> order by _id DESC
