@@ -87,10 +87,6 @@ router.get("/myUploads", auth, async (req, res) => {
           .limit(perPage)
           .skip((page - 1) * perPage)
           .sort({ [sort]: reverse })        // like -> order by _id DESC
-      // data.forEach(item => {
-      //     item.img_url = !item.img_url.includes('http') && item.img_url.length ? API_URL + item.img_url : item.img_url
-      //     // item.name= item.name.slice(0, 1).toUpperCase() + item.name.slice(1)
-      // });
       return res.status(200).json(data);
   }
   catch (err) {
