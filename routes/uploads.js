@@ -72,7 +72,7 @@ router.get("/myUploads", auth, async (req, res) => {
   let reverse = req.query.reverse == "yes" ? 1 : -1;
 
   try {
-      let data = await UploadModelModel.find({ user_id: req.tokenData._id })
+      let data = await UploadModel.find({ user_id: req.tokenData._id })
           .limit(perPage)
           .skip((page - 1) * perPage)
           .sort({ [sort]: reverse })        // like -> order by _id DESC
