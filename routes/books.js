@@ -20,6 +20,7 @@ router.get("/booksList", async (req, res) => {
       let data = await BookModel
       .find({})
       .populate('subjectId','name')
+      console.log("in return without pagention")
     res.json(data);
     }else{
       let data = await BookModel
@@ -28,6 +29,7 @@ router.get("/booksList", async (req, res) => {
       .limit(perPage)
       .skip((page - 1) * perPage)
       .populate('subjectId','name')
+      console.log("in return wit pagention")
     res.json(data);
     }
    
