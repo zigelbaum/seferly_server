@@ -18,7 +18,8 @@ router.get("single/:uploadId", async (req, res) => {
         path: 'bookId',
         populate: {
           path: 'subjectId',
-          model: 'subjects'
+          model: 'subjects',
+          select:'name'
         },
         model: 'books'
       })
