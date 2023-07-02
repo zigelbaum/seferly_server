@@ -10,18 +10,27 @@ router.get("/" ,authAdmin, (req,res)=> {
 
 //returns list of all books
 router.get("/booksList", async (req, res) => {
-  let perPage = req.query.perPage || 10;
+  let perPage = req.query.perPage ||10;
   let page = req.query.page || 1;
   let sort = req.query.sort || "_id";
 
 
   try {
-    let data = await BookModel
+    if(!req.query.perPage){
+      let data = await BookModel
+      .find({})
+      .populate('subjectId','name')
+    res.json(data);
+    }else{
+      let data = await BookModel
+      .find({})
       .find({})
       .limit(perPage)
       .skip((page - 1) * perPage)
       .populate('subjectId','name')
     res.json(data);
+    }
+   
   }
   catch (err) {
     console.log(err);
