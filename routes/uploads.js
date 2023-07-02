@@ -4,29 +4,32 @@ const { auth, authAdmin } = require("../middlewares/auth");
 const { UploadModel } = require("../models/uploadModel");
 const { validateUpload } = require("../validation/uploadValidation");
 const { BookModel } = require("../models/bookModel");
-const {forEach, filter} =require("lodash")
+const { forEach, filter } = require("lodash")
 const router = express.Router();
 
 
 // get upload with uploadId
-router.get("single/:uploadId",async(req,res)=>{
+router.get("single/:uploadId", async (req, res) => {
   let uploadID = req.params.uploadId
-        try {
-            let upload = await UploadModel.find({_id:uploadID})
-            .populate('user_id','fullName email city phone')
-                 .populate({path: 'bookId',
-                 populate: {
-                    path: 'subjectId',
-                    model: 'subjects'
-                 },
-                 model: 'books',
-                 select:'name subjectId type'})
-            console.log(upload)
-            res.json(upload)
-        } catch (err) {
-            console.log(err);
-            res.status(500).json({ msg: "there error try again later", err })
-        }
+  try {
+    let upload = await UploadModel.find({ _id: uploadID })
+      .populate('user_id', 'fullName email city phone')
+      .populate({
+        path: 'bookId',
+        populate: {
+          path: 'subjectId',
+          model: 'subjects'
+        },
+        model: 'books'
+      })
+    //,
+    //select:'name subjectId type'})
+    console.log(upload)
+    res.json(upload)
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ msg: "there error try again later", err })
+  }
 })
 
 
@@ -35,24 +38,27 @@ router.get("/uploadsList", async (req, res) => {
   let perPage = req.query.perPage || 10;
   let page = req.query.page || 1;
 
-  try{
+  try {
     let data = await UploadModel
-    .find({})
-    .limit(perPage)
-    .skip((page - 1) * perPage)
-    .populate('user_id','fullName email city phone')
-    .populate({path: 'bookId',
-                 populate: {
-                    path: 'subjectId',
-                    model: 'subjects'
-                 },
-                 model: 'books',
-                 select:'name subjectId type'})
+      .find({})
+      .limit(perPage)
+      .skip((page - 1) * perPage)
+      .populate('user_id', 'fullName email city phone')
+      .populate({
+        path: 'bookId',
+        populate: {
+          path: 'subjectId',
+          model: 'subjects'
+        },
+        model: 'books',
+        select: 'name subjectId type'
+      })
+    console.log(data);
     res.json(data);
   }
-  catch(err){
+  catch (err) {
     console.log(err);
-    res.status(500).json({msg:"there error try again later",err})
+    res.status(500).json({ msg: "there error try again later", err })
   }
 })
 
@@ -78,23 +84,23 @@ router.post("/", auth, async (req, res) => {
 
 //returns all uploads by subject
 router.get("/subjects/:subId", async (req, res) => {
-  
+
   try {
     let subId = req.params.subId;
 
     let data = await UploadModel.find({})
-    .populate('user_id','fullName email city phone')
-    .populate({
-      path: 'bookId',
-      populate: {
-         path: 'subjectId',
-         model: 'subjects',
-         match:{_id:subId}
-      },
-      model: 'books',
-      select:'name subjectId type',
-     
-    })
+      .populate('user_id', 'fullName email city phone')
+      .populate({
+        path: 'bookId',
+        populate: {
+          path: 'subjectId',
+          model: 'subjects',
+          match: { _id: subId }
+        },
+        model: 'books',
+        select: 'name subjectId type',
+
+      })
     res.json(data)
   }
   catch (err) {
@@ -109,17 +115,17 @@ router.get("/books/:bookID", async (req, res) => {
     let bookID = req.params.bookID;
 
     let data = await UploadModel.find({})
-    .populate('user_id','fullName email city phone')
-    .populate({
-      path: 'bookId',
-      populate: {
-         path: 'subjectId',
-         model: 'subjects',
-      },
-      model: 'books',
-      select:'name subjectId type',
-    })
-    .find({bookId:bookID})
+      .populate('user_id', 'fullName email city phone')
+      .populate({
+        path: 'bookId',
+        populate: {
+          path: 'subjectId',
+          model: 'subjects',
+        },
+        model: 'books',
+        select: 'name subjectId type',
+      })
+      .find({ bookId: bookID })
 
     res.json(data)
   }
@@ -136,21 +142,21 @@ router.get("/cities/:cityName", async (req, res) => {
 
   try {
     let cityName = req.params.cityName;
-    let data = await UploadModel.find({  })
-    .populate('user_id','fullName email city phone')
-    .populate({
-      path: 'bookId',
-      populate: {
-         path: 'subjectId',
-         model: 'subjects',
-      },
-      model: 'books',
-      select:'name subjectId type',
-    });
-      let result = filter(data, (item) => {
+    let data = await UploadModel.find({})
+      .populate('user_id', 'fullName email city phone')
+      .populate({
+        path: 'bookId',
+        populate: {
+          path: 'subjectId',
+          model: 'subjects',
+        },
+        model: 'books',
+        select: 'name subjectId type',
+      });
+    let result = filter(data, (item) => {
       return item.user_id.city === cityName;
-     
-  })
+
+    })
     res.json(result)
   }
   catch (err) {
@@ -176,16 +182,16 @@ router.get("/prices", async (req, res) => {
         .limit(perPage)
         .skip((page - 1) * perPage)
         .sort({ [sort]: reverse })
-        .populate('user_id','fullName email city phone')
+        .populate('user_id', 'fullName email city phone')
         .populate({
           path: 'bookId',
           populate: {
-             path: 'subjectId',
-             model: 'subjects',
+            path: 'subjectId',
+            model: 'subjects',
           },
           model: 'books',
-          select:'name subjectId type'
-      })
+          select: 'name subjectId type'
+        })
 
     }
     else if (max) {
@@ -193,53 +199,53 @@ router.get("/prices", async (req, res) => {
         .limit(perPage)
         .skip((page - 1) * perPage)
         .sort({ [sort]: reverse })
-        .populate('user_id','fullName email city phone')
+        .populate('user_id', 'fullName email city phone')
         .populate({
           path: 'bookId',
           populate: {
-             path: 'subjectId',
-             model: 'subjects',
+            path: 'subjectId',
+            model: 'subjects',
           },
           model: 'books',
-          select:'name subjectId type'
-      })
-    
+          select: 'name subjectId type'
+        })
+
     } else if (min) {
       data = await UploadModel.find({ price: { $gte: min } })
         .limit(perPage)
         .skip((page - 1) * perPage)
         .sort({ [sort]: reverse })
-        .populate('user_id','fullName email city phone')
+        .populate('user_id', 'fullName email city phone')
         .populate({
           path: 'bookId',
           populate: {
-             path: 'subjectId',
-             model: 'subjects',
+            path: 'subjectId',
+            model: 'subjects',
           },
           model: 'books',
-          select:'name subjectId type'
-      })
- 
+          select: 'name subjectId type'
+        })
+
     } else {
       data = await UploadModel.find({})
         .limit(perPage)
         .skip((page - 1) * perPage)
         .sort({ [sort]: reverse })
-        .populate('user_id','fullName email city phone')
+        .populate('user_id', 'fullName email city phone')
         .populate({
           path: 'bookId',
           populate: {
-             path: 'subjectId',
-             model: 'subjects',
+            path: 'subjectId',
+            model: 'subjects',
           },
           model: 'books',
-          select:'name subjectId type'
-      })
-   
+          select: 'name subjectId type'
+        })
+
     }
-   
-  res.json(data);
- }
+
+    res.json(data);
+  }
   catch (err) {
     console.log(err);
     res.status(500).json({ msg: "err in get uploads in price range", err })
