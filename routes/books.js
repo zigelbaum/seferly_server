@@ -25,9 +25,9 @@ router.get("/booksList", async (req, res) => {
     }else{
       let data = await BookModel
       .find({})
+      .populate('subjectId','name')
       .limit(perPage)
       .skip((page - 1) * perPage)
-      .populate('subjectId','name')
       console.log("in return wit pagention")
     res.json(data);
     }
