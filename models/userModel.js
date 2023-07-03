@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 const jwt = require("jsonwebtoken");
 const {config} = require("../config/secret")
+const {UploadModel}=require("./uploadModel")
 
 let userSchema = new mongoose.Schema({
   fullName: {
@@ -20,6 +21,7 @@ let userSchema = new mongoose.Schema({
   active:{
     type:Boolean, default: true,
   },
+  uploads:[{ type:mongoose.ObjectId, ref:"uploads"}]
   // wishList:{ type:mongoose.ObjectId, ref:'books', default:null}
 })
 
