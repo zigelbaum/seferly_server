@@ -1,7 +1,6 @@
 const mongoose = require("mongoose");
 const jwt = require("jsonwebtoken");
 const {config} = require("../config/secret")
-const {UploadModel}=require("./uploadModel")
 
 let userSchema = new mongoose.Schema({
   fullName: {
