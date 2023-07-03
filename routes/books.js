@@ -42,7 +42,7 @@ router.get("/booksList", async (req, res) => {
 
 //returns list of names and id's of books
 router.get("/booksNamesList", async (req, res) => {
-
+  
   try {
     let data = await BookModel
       .find({}, { _id: 1, name: 1 })
@@ -50,7 +50,7 @@ router.get("/booksNamesList", async (req, res) => {
   }
   catch (err) {
     console.log(err);
-    res.status(500).json({ msg: "err couldn't load books", err });
+    res.status(500).json({ msg: "err couldn't load books names", err });
   }
 })
 
