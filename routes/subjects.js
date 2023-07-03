@@ -10,13 +10,9 @@ router.get("/" ,authAdmin, async(req,res)=> {
 
 
 router.get("/subjectsList", async (req, res) => {
-  let perPage = req.query.perPage || 20;
-  let page = req.query.page || 1;
 
   try {
     let data = await SubjectModel.find({})
-      .limit(perPage)
-      .skip((page - 1) * perPage)
       .sort({ name: -1 })
     res.json(data);
   }
