@@ -3,7 +3,7 @@ const express = require("express");
 const { auth, authAdmin } = require("../middlewares/auth");
 const { UploadModel } = require("../models/uploadModel");
 const { validateUpload } = require("../validation/uploadValidation");
-const { BookModel } = require("../models/bookModel");
+const { UserModel } = require("../models/userModel");
 const { forEach, filter } = require("lodash")
 const router = express.Router();
 
@@ -104,6 +104,8 @@ router.post("/", auth, async (req, res) => {
     let upload = new UploadModel(req.body);
     upload.user_id = req.tokenData._id;
     await upload.save();
+    let user = await UserModel.findByIdAndUpdate({ _id: req.tokenData._id }, { $push: { uploads: upload._id } });
+    console.log(user);
     res.status(201).json(upload);
   }
   catch (err) {
