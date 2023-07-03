@@ -34,7 +34,7 @@ router.get("/wishList", auth, async (req, res) => {
 
 
 //returns list of user wishes
-router.get("/MyWishList", auth, async (req, res) => {
+router.get("/myWishList", auth, async (req, res) => {
     try {
         let data = await WishModel
             .find({ user_id: req.tokenData._id })
