@@ -20,8 +20,8 @@ let userSchema = new mongoose.Schema({
   active:{
     type:Boolean, default: true,
   },
-  uploads:[{ type:mongoose.ObjectId, ref:"uploads"}]
-  // wishList:{ type:mongoose.ObjectId, ref:'books', default:null}
+  uploads:[{ type:mongoose.ObjectId, ref:"uploads"}],
+  wishList:[{ type:mongoose.ObjectId, ref:'wishes'}]
 })
 
 exports.UserModel = mongoose.model("users",userSchema);
