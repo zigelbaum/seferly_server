@@ -2,8 +2,7 @@
 const express = require("express");
 const router = express.Router();
 const { auth, authAdmin } = require("../middlewares/auth");
-// const { BookModel } = require("../models/bookModel");
-// const { validateBook } = require("../validation/bookValidation")
+const { UserModel } = require("../models/userModel");
 const { WishModel } = require("../models/wishModel")
 
 router.get("/", auth, (req, res) => {
@@ -68,6 +67,7 @@ router.post("/", auth, async (req, res) => {
         let wish = new WishModel(req.body);
         wish.user_id = req.tokenData._id;
         await wish.save();
+        let user = await UserModel.findByIdAndUpdate({ _id: req.tokenData._id }, { $push: { wishList: wish.book_id } });
         res.json(wish);
     }
     catch (err) {
