@@ -8,4 +8,4 @@ const wishSchema = new mongoose.Schema({
 
 
 
-exports.WishModel = mongoose.model("subjects", wishSchema);
+exports.WishModel = mongoose.model("wishes", wishSchema);
