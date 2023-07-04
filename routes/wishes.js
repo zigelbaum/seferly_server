@@ -47,6 +47,22 @@ router.get("/myWishList", auth, async (req, res) => {
 })
 
 
+//returns all the users and book name on book
+router.get("/bookWishes/:bookId", auth, async (req, res) => {
+    try {
+        let data = await WishModel
+            .find({ book_id: req.params.bookId })
+            .populate('user_id','fullName email')
+            .populate('book_id','name')
+        res.json(data);
+    }
+    catch (err) {
+        console.log(err);
+        res.status(500).json({ msg: "err couldn't load users wishing for book ", err });
+    }
+})
+
+
 //returns number of wishes in the system
 router.get("/count", authAdmin, async (req, res) => {
     try {
