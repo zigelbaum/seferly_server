@@ -38,6 +38,16 @@ router.get("/myWishList", auth, async (req, res) => {
     try {
         let data = await WishModel
             .find({ user_id: req.tokenData._id })
+            .select('book_id')
+            .populate({
+                path: 'book_id',
+                populate: {
+                    //  path: 'bookId.subjectId',
+                    path: 'subjectId',
+                    model: 'subjects',
+                },
+                model: 'books'
+            })
         res.json(data);
     }
     catch (err) {
@@ -52,8 +62,8 @@ router.get("/bookWishes/:bookId", auth, async (req, res) => {
     try {
         let data = await WishModel
             .find({ book_id: req.params.bookId })
-            .populate('user_id','fullName email')
-            .populate('book_id','name')
+            .populate('user_id', 'fullName email')
+            .populate('book_id', 'name')
         res.json(data);
     }
     catch (err) {
